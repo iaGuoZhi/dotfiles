@@ -1,0 +1,6 @@
+vim/bundle/*
+vim/plugged/*
+.DS_Store
+*/.DS_Store
+*/backup/*
+tmux/resurrect/*

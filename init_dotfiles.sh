@@ -66,21 +66,21 @@ if [[ $vpn_selected == true ]]; then
     printf "init vpn on $hostname\n"
     if [[ $arch == x86_64* ]]; then
         printf "X64 Architecture\n"
-    
+
         cd clash
         ./clash -d . &> /dev/null &
-    
+
         # run clash process after current shell exits
         disown
 
         vpn_server=${localhost_ip}:${clash_port}
-    
+
         cd ..
     elif [[ $arch == arm* ]] || [[ $arch = aarch64 ]]; then
         printf "ARM Architecutre\n"
         vpn_server=${guozhi_ipads_ip}:${clash_port}
     fi
-    
+
     # bootstrap proxy
     export https_proxy=http://${vpn_server} http_proxy=http://${vpn_server} all_proxy=socks5://${vpn_server}
     # bootstrap proxy
@@ -91,15 +91,15 @@ fi
 if [[ $git_selected == true ]]; then
     printf "init git config on $hostname\n"
     cd git
-    
+
     # first we should set git config correctly, because git proxy can help us downlaod git project much more quickly
     printf "backup origin gitconfig...\n"
     if [ -f "$HOME/.gitconfig" ]; then
         mv ~/.gitconfig ./backup/gitconfig.`date +%F-%T`
     fi
-    
+
     ln -s ~/dotfiles/git/gitconfig ~/.gitconfig
-    
+
     cd ..
 fi
 # git
@@ -113,39 +113,40 @@ if [[ $vim_selected == true ]]; then
     if [ -f "$HOME/.vimrc" ]; then
         mv ~/.vimrc ./backup/vimrc.`date +%F-%T`
     fi
-    
+
     printf "create new vimrc...\n"
     ln -s ~/dotfiles/vim/vimrc ~/.vimrc
-    
+
     git submodule init
     git submodule update
-    
-    cd ..
+
     rm -rf ~/.vim
     ln -s ~/dotfiles/vim ~/.vim
-    
+
     printf "Install vim plugins...\n"
     bash ./init_vim.sh
+
+    cd ..
 fi
 # vim
 
 # tmux
 if [[ $tmux_selected == true ]]; then
     cd tmux
-    
+
     printf "backup origin tmux.conf...\n"
     if [ -f "$HOME/.tmux.conf" ]; then
         mv ~/.tmux.conf ./backup/tmux.conf.`date +%F-%T`
     fi
-    
+
     printf "create new tmux.conf...\n"
     ln -s ~/dotfiles/tmux/tmux.conf ~/.tmux.conf
-    
+
     cd ..
 
     printf " Install tmux plugin framework: tpm\n"
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    
+
     tmux source ~/.tmux.conf
 
     # auto install tmux plugin
@@ -158,15 +159,15 @@ fi
 # zsh
 if [[ $zsh_selected == true ]]; then
     cd zsh
-    
+
     printf "Backup origin zshrc...\n"
     if [ -f "$HOME/.zshrc" ]; then
         mv ~/.zshrc ./backup/zshrc.`date +%F-%T`
     fi
-    
+
     printf "Create new zshrc...\n"
     ln -s ~/dotfiles/zsh/zshrc ~/.zshrc
-    
+
     # oh-my-zsh
     # bash -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     # Install oh-my-zsh by above command in scripts will lead scripts exit because of changing shell to zsh, ref to https://github.com/ohmyzsh/ohmyzsh/issues/5873
@@ -174,12 +175,11 @@ if [[ $zsh_selected == true ]]; then
     if [ ! -d "~/.oh-my-zsh" ]; then
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
-    
+
     printf "Install zsh plugins...\n"
     bash ./init_zsh.sh
-    
+
     chsh -s $(which zsh)
     cd ..
 fi
 # zsh
-

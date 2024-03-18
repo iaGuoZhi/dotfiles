@@ -171,7 +171,7 @@ if [[ " ${selected_dotfiles[@]} " =~ "zsh" ]]; then
   ln -s ./zsh/zshrc ~/.zshrc
 
   printf "  Install zsh plugins...\n"
-  bash ./init_zsh.sh
+  bash ./zsh/init_zsh.sh
 
   chsh -s $(which zsh)
 fi

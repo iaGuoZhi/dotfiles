@@ -4,3 +4,4 @@ vim/plugged/*
 */.DS_Store
 */backup/*
 tmux/resurrect/*
+./backup/*

@@ -1,21 +1,16 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"
+cd ~/dotfiles
 
 # vim
 printf "Backup origin vimrc...\n"
-if [ -f ~/.vimrc ]; then
-  mv ~/.vimrc ./backup/vimrc.`date +%F-%T`
-fi
+mv ~/.vimrc ~/dotfiles/backup/vimrc.`date +%F-%T`
 printf "Create new vimrc...\n"
-ln -s ./vimrc ~/.vimrc
+ln -s ~/dotfiles/vimrc ~/.vimrc
 
 # tmux
 printf "Backup origin tmux.conf...\n"
-if [ -f ~/.tmux.conf ]; then
-  mv ~/.tmux.conf ./backup/tmux.conf.`date +%F-%T`
-fi
-
+mv ~/.tmux.conf ~/dotfiles/backup/tmux.conf.`date +%F-%T`
 printf "Create new tmux.conf...\n"
-ln -s ./tmux.conf ~/.tmux.conf
+ln -s ./dotfiles/tmux.conf ~/.tmux.conf
 tmux source ~/.tmux.conf

@@ -134,3 +134,5 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 colorscheme desert
+
+let g:coc_disable_startup_warning = 1

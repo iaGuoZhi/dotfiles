@@ -127,6 +127,10 @@ call plug#begin('~/.vim/plugged')
 " Error checking
 Plug 'dense-analysis/ale'
 
+" Latest nodejs should be installed as requirement, btw nodejs should be
+" reinstalled in ubuntu
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 call plug#end()
 
 colorscheme desert

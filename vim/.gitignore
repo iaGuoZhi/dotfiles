@@ -1,0 +1,6 @@
+bundle/*
+plugged/*
+.DS_Store
+*/.DS_Store
+*.bak
+*.bk

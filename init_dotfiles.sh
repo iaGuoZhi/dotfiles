@@ -7,6 +7,8 @@ printf "Backup origin vimrc...\n"
 mv ~/.vimrc ~/dotfiles/backup/vimrc.`date +%F-%T`
 printf "Create new vimrc...\n"
 ln -s ~/dotfiles/vimrc ~/.vimrc
+rm -rf ~/.vim
+ln -s ./vim ~/.vim
 # Install plugins
 vim +PlugInstall +PlugUpdate +qall
 

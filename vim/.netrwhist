@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='/home/guozhi/Project/hj'
+let g:netrw_dirhist_2='/home/guozhi/Project/jitter/src'
+let g:netrw_dirhist_1='/home/guozhi/Internship/dtl/benchmarks/benchmarks/cache/results'
+let g:netrw_dirhist_0='/home/guozhi/Internship/dtl/benchmarks/benchmarks/compress/Chimp'
+let g:netrw_dirhist_9='/home/guozhi/Internship/dtl/benchmarks/time-series/compress/code/influxdb'
+let g:netrw_dirhist_8='/home/guozhi/Internship/dtl/benchmarks/benchmarks/compress/data'
+let g:netrw_dirhist_7='/home/guozhi/Internship/dtl/benchmarks/benchmarks/compress/example_data'
+let g:netrw_dirhist_6='/home/guozhi/Internship/dtl/benchmarks/benchmarks/compress/data'
+let g:netrw_dirhist_5='/home/guozhi/Internship/dtl/benchmarks/benchmarks/compress/results/compress_20240112140935'
+let g:netrw_dirhist_4='/home/guozhi/Internship/dtl/benchmarks/benchmarks/compress/code/influxdb'

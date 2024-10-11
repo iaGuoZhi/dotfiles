@@ -117,7 +117,7 @@ if [[ " ${selected_dotfiles[@]} " =~ "vim" ]]; then
   git submodule update
 
   rm -rf ~/.vim
-  ln -s ./vim ~/.vim
+  cp -r ./vim ~/.vim
 
   printf "  Install vim plugins...\n"
   bash ./init_vim.sh

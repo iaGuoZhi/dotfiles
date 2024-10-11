@@ -9,8 +9,7 @@ printf "Create new vimrc...\n"
 ln -s ~/dotfiles/vimrc ~/.vimrc
 rm -rf ~/.vim
 ln -s ./vim ~/.vim
-# Install plugins
-vim +PlugInstall +PlugUpdate +qall
+bash ./init_vim.sh
 
 # tmux
 printf "Backup origin tmux.conf...\n"

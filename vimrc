@@ -122,4 +122,11 @@ map <LEADER>c  <Esc>o```<CR>
 
 map tx : r !figlet
 
+call plug#begin('~/.vim/plugged')
+
+" Error checking
+Plug 'dense-analysis/ale'
+
+call plug#end()
+
 colorscheme desert

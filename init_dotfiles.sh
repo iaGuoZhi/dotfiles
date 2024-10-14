@@ -8,8 +8,7 @@ mv ~/.vimrc ~/dotfiles/backup/vimrc.`date +%F-%T`
 printf "Create new vimrc...\n"
 ln -s ~/dotfiles/vimrc ~/.vimrc
 rm -rf ~/.vim
-ln -s ./vim ~/.vim
-bash ./init_vim.sh
+cp -r ./vim ~/.vim
 
 # tmux
 printf "Backup origin tmux.conf...\n"

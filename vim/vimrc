@@ -112,6 +112,8 @@ map tl :+tabnext<CR>
 
 map <LEADER><LEADER>   <Esc>/TBR<CR>:nohlsearch<CR>
 map <LEADER>sc :set spell!<CR>
+map <LEADER>ce :Copilot enable<CR>
+map <LEADER>cd :Copilot disable<CR>
 
 map <LEADER>a  <Esc>opr_info("[gz-debug]: %s\t%d\n", __func__, __LINE__);<CR><Esc>
 map <LEADER>r  <Esc>a"\033[0;31m" "\033[0m"<Esc>
@@ -120,7 +122,7 @@ map <LEADER>t  <Esc>o/**<CR>TBR<CR>/<Esc>
 map <LEADER>d  <Esc>:ALEDetail<CR>
 map <LEADER>c  <Esc>o```<CR>
 
-map tx : r !figlet 
+map tx : r !figlet
 
 call plug#begin('~/.vim/plugged')
 
@@ -138,9 +140,6 @@ Plug 'majutsushi/tagbar', { 'on': 'TagbarOpenAutoClose' }
 " Error checking
 Plug 'dense-analysis/ale'
 
-" Latest nodejs should be installed as requirement, btw nodejs should be
-" reinstalled in ubuntu
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'Valloric/YouCompleteMe'
 Plug 'SidOfc/mkdx'
 
@@ -163,6 +162,12 @@ Plug 'vim-scripts/indentpython.vim'
 
 " CPP
 Plug 'octol/vim-cpp-enhanced-highlight'
+
+" lsp
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Markdown
 " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
@@ -193,7 +198,7 @@ Plug 'fadein/vim-FIGlet'
 
 call plug#end()
 
-colorscheme desert
+colorscheme industry
 " let g:SnazzyTransparent = 1
 
 " ===
@@ -233,21 +238,28 @@ let g:NERDTreeIndicatorMapCustom = {
 set updatetime=100
 
 
-" ===
-" === You Complete ME
-" ===
-nnoremap gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap g/ :YcmCompleter GetDoc<CR>
-nnoremap gt :YcmCompleter GetType<CR>
-nnoremap gr :YcmCompleter GoToReferences<CR>
-let g:ycm_autoclose_preview_window_after_completion=0
-let g:ycm_autoclose_preview_window_after_insertion=1
-let g:ycm_disable_for_files_larger_than_kb = 1000
-let g:ycm_use_clangd = 0
-let g:ycm_key_list_stop_completion = ['<C-y>']
-let g:ycm_python_interpreter_path = "/bin/python3"
-let g:ycm_python_binary_path = "/bin/python3"
+" Autocompletion
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+let g:asyncomplete_auto_popup = 1
 
+function! s:check_back_space() abort
+        let col = col('.') - 1
+            return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+      \ asyncomplete#force_refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" allow modifying the completeopt variable, or it will
+" " be overridden all the time
+let g:asyncomplete_auto_completeopt = 1
+
+set completeopt=menuone,noinsert,noselect,preview
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " ===
 " === ale
@@ -259,12 +271,21 @@ let g:ale_sign_warning = '!'
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:airline#extensions#ale#enable = 1
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
 
 let g:ale_linters = {
 \   'c': ['clangd'],
 \   'c++': ['clangd'],
 \   'python3': ['pylint'],
-\   'rust': ['rustc', 'rls']
+\   'rust': ['rustc', 'rls'],
+\   'ocaml': ['merlin']
+\}
+
+let g:ale_fixers = {
+\   'ocaml':      ['ocamlformat'],
+\   '*':          ['remove_trailing_lines', 'trim_whitespace'],
 \}
 
 " ===
@@ -272,35 +293,10 @@ let g:ale_linters = {
 " ===
 map <silent> T :TagbarOpenAutoClose<CR>
 
-" ===
-" === coc
-" ===
-" Use tab for trigger completion with characters ahead and navigate
-" NOTE: There's always complete item selected by default, you may want to enable
-" no select by `"suggest.noselect": true` in your configuration file
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-" Make <CR> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
-let g:coc_snippet_next = '<tab>'
-
-" Change selection color
-hi CocMenuSel ctermbg=darkgrey ctermfg=yellow
-hi CocSearch ctermfg=blue
 
 " ===
 " === MarkdownPreview
@@ -393,3 +389,9 @@ let g:SignatureMap = {
 " ===
 let g:undotree_DiffAutoOpen = 0
 map L :UndotreeToggle<CR>
+
+" ===
+" === OCaml
+" ===
+" let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+" execute "set rtp+=" . g:opamshare . "/merlin/vim"

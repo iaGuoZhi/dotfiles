@@ -12,6 +12,7 @@ cp -r ./vim ~/.vim
 mkdir -p ~/.local/share
 rm -rf ~/.local/share/vim-lsp-settings
 cp -r ./vim-lsp-settings ~/.local/share/
+sed -i "s/gz9/$USER/g" .local/share/vim-lsp-settings/servers/pylsp-all/pylsp-all
 
 # tmux
 printf "Backup origin tmux.conf...\n"

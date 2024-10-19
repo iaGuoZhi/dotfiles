@@ -127,12 +127,22 @@ call plug#begin('~/.vim/plugged')
 " Error checking
 Plug 'dense-analysis/ale'
 
-" Latest nodejs should be installed as requirement, btw nodejs should be
-" reinstalled in ubuntu
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Completion
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+" allow modifying the completeopt variable, or it will
+" be overridden all the time
+let g:asyncomplete_auto_completeopt = 0
+
+set completeopt=menuone,noinsert,noselect,preview
 
 call plug#end()
 
 colorscheme desert
-
-let g:coc_disable_startup_warning = 1

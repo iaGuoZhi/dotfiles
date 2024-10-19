@@ -9,6 +9,9 @@ printf "Create new vimrc...\n"
 ln -s ~/dotfiles/vimrc ~/.vimrc
 rm -rf ~/.vim
 cp -r ./vim ~/.vim
+mkdir -p ~/.local/share
+rm -rf ~/.local/share/vim-lsp-settings
+cp -r ./vim-lsp-settings ~/.local/share/
 
 # tmux
 printf "Backup origin tmux.conf...\n"
